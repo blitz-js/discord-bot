@@ -16,5 +16,5 @@ We also have a docker-compose.yml for development, along with a .env.example.
 
 ## Thanks!
 
--   [ronthecookie](https://github.com/ronthecookie) for writing the base for the bot and the amazing [framework](https://github.com/cookiecord/cookiecord) used!
--   [Typescript Discord](https://github.com/typescript-community/community-bot) bot which we forked as the basis of this.
+- [ronthecookie](https://github.com/ronthecookie) for writing the base for the bot and the amazing [framework](https://github.com/cookiecord/cookiecord) used!
+- [Typescript Discord](https://github.com/typescript-community/community-bot) bot which we forked as the basis of this.
