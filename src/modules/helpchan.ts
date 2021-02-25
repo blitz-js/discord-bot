@@ -7,30 +7,27 @@ import {
   optional,
 } from "cookiecord"
 import { Message, MessageEmbed, Guild, TextChannel, GuildMember } from "discord.js"
-import { HelpUser } from "../entities/HelpUser"
+import db from "db"
 import {
   categories,
-  TS_BLUE,
+  BLITZ_PURPLE,
   GREEN,
-  askCooldownRoleId,
+  hasHelpChannelRoleId,
   channelNames,
   dormantChannelTimeout,
   dormantChannelLoop,
   askHelpChannelId,
   ongoingEmptyTimeout,
 } from "../env"
-import { isTrustedMember } from "../util/inhibitors"
 
 const AVAILABLE_MESSAGE = `
 **Send your question here to claim the channel**
-This channel will be dedicated to answering your question only. Others will try to answer and help you solve the issue.
+This channel will be dedicated to answering your question only.
 
 **Keep in mind:**
-• It's always ok to just ask your question. You don't need permission.
 • Explain what you expect to happen and what actually happens.
 • Include a code sample and error message, if you got any.
-
-For more tips, check out StackOverflow's guide on **[asking good questions](https://stackoverflow.com/help/how-to-ask)**.
+• For more tips, check out this guide on [asking good questions](https://stackoverflow.com/help/how-to-ask).
 `
 
 const DORMANT_MESSAGE = `
@@ -56,7 +53,7 @@ export class HelpChanModule extends Module {
       } hours of inactivity or when you send !close.`
     )
 
-  DORMANT_EMBED = new MessageEmbed().setColor(TS_BLUE).setDescription(DORMANT_MESSAGE)
+  DORMANT_EMBED = new MessageEmbed().setColor(BLITZ_PURPLE).setDescription(DORMANT_MESSAGE)
 
   busyChannels: Set<string> = new Set() // a lock to eliminate race conditions
   ongoingEmptyTimeouts: Map<string, NodeJS.Timeout> = new Map() // a lock used to prevent multiple timeouts running on the same channel
@@ -161,7 +158,7 @@ export class HelpChanModule extends Module {
     this.busyChannels.add(msg.channel.id)
 
     await msg.pin()
-    await this.addCooldown(msg.member, msg.channel)
+    await this.addHasHelpChannelRole(msg.member, msg.channel)
     await this.moveChannel(msg.channel, categories.ongoing)
 
     await this.ensureAskChannels(msg.guild)
@@ -195,11 +192,12 @@ export class HelpChanModule extends Module {
       return await msg.channel.send(":warning: you can only run this in ongoing help channels.")
     }
 
-    const owner = await HelpUser.findOne({
-      channelId: msg.channel.id,
-    })
+    const owner = await db.user.findFirst({ where: { channelId: msg.channel.id } })
 
-    if ((owner && owner.userId === msg.author.id) || msg.member?.hasPermission("MANAGE_MESSAGES")) {
+    if (
+      (owner && owner.discordId === msg.author.id) ||
+      msg.member?.hasPermission("MANAGE_MESSAGES")
+    ) {
       await this.markChannelAsDormant(msg.channel)
     } else {
       return await msg.channel.send(":warning: you have to be the asker to close the channel.")
@@ -254,20 +252,18 @@ export class HelpChanModule extends Module {
     const pinned = await channel.messages.fetchPinned()
     await Promise.all(pinned.map((msg) => msg.unpin()))
 
-    const helpUser = await HelpUser.findOne({
-      channelId: channel.id,
-    })
+    const helpUser = await db.user.findFirst({ where: { channelId: channel.id } })
     if (helpUser) {
       try {
         const member = await channel.guild.members.fetch({
-          user: helpUser.userId,
+          user: helpUser.discordId,
         })
-        await member.roles.remove(askCooldownRoleId)
+        await member.roles.remove(hasHelpChannelRoleId)
       } catch {
         // Do nothing, member left the guild
       }
     }
-    await HelpUser.delete({ channelId: channel.id })
+    await db.user.delete({ where: { channelId: channel.id } })
 
     await this.moveChannel(channel, categories.dormant)
 
@@ -287,28 +283,28 @@ export class HelpChanModule extends Module {
     }
   }
 
-  private async addCooldown(member: GuildMember, channel: TextChannel) {
-    await member.roles.add(askCooldownRoleId)
-    const helpUser = new HelpUser()
-    helpUser.userId = member.user.id
-    helpUser.channelId = channel.id
-    await helpUser.save()
+  private async addHasHelpChannelRole(member: GuildMember, channel: TextChannel) {
+    await member.roles.add(hasHelpChannelRoleId)
+    await db.user.create({
+      data: {
+        discordId: member.user.id,
+        channelId: channel.id,
+      },
+    })
   }
 
   @command({ inhibitors: [CommonInhibitors.guildsOnly] })
-  async cooldown(msg: Message, @optional member?: GuildMember) {
+  async removeHelpChannelRole(msg: Message, @optional member?: GuildMember) {
     const guildTarget = await msg.guild!.members.fetch(member ?? msg.author)
 
     if (!guildTarget) return
 
-    if (!guildTarget.roles.cache.has(askCooldownRoleId)) {
-      await msg.channel.send(`${guildTarget.displayName} doesn't have a cooldown.`)
+    if (!guildTarget.roles.cache.has(hasHelpChannelRoleId)) {
+      await msg.channel.send(`${guildTarget.displayName} doesn't have a claimed help channel role.`)
       return
     }
 
-    const helpUser = await HelpUser.findOne({
-      userId: guildTarget.id,
-    })
+    const helpUser = await db.user.findFirst({ where: { discordId: guildTarget.id } })
 
     if (helpUser) {
       return msg.channel.send(
@@ -316,15 +312,12 @@ export class HelpChanModule extends Module {
       )
     }
 
-    await guildTarget.roles.remove(askCooldownRoleId)
-    await msg.channel.send(`Removed ${guildTarget.displayName}'s cooldown.`)
+    await guildTarget.roles.remove(hasHelpChannelRoleId)
+    await msg.channel.send(`Removed ${guildTarget.displayName}'s claimed help channel role.`)
   }
 
-  @command({ inhibitors: [isTrustedMember] })
   async claim(msg: Message, member: GuildMember) {
-    const helpUser = await HelpUser.findOne({
-      userId: member.id,
-    })
+    const helpUser = await db.user.findFirst({ where: { discordId: member.id } })
     if (helpUser) {
       await msg.channel.send(
         `${member.displayName} already has an open help channel: <#${helpUser.channelId}>`
@@ -365,7 +358,7 @@ export class HelpChanModule extends Module {
         .setDescription(msgContent)
     )
     await toPin.pin()
-    await this.addCooldown(member, claimedChannel)
+    await this.addHasHelpChannelRole(member, claimedChannel)
     await this.moveChannel(claimedChannel, categories.ongoing)
     await claimedChannel.send(
       `${member.user} this channel has been claimed for your question. Please review <#${askHelpChannelId}> for how to get help.`

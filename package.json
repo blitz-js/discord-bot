@@ -2,12 +2,23 @@
   "name": "blitz-discord-bot",
   "version": "0.0.1",
   "description": "Blitz Community Bot",
+  "scripts": {
+    "start": "ts-node-dev --respawn src",
+    "prod:start": "node dist/index.js",
+    "build": "tsc",
+    "lint": "prettier --check \"src/**/*.ts\"",
+    "lint:fix": "prettier \"src/**/*.ts\" --write "
+  },
   "main": "dist/index.js",
+  "prisma": {
+    "schema": "db/schema.prisma"
+  },
   "prettier": {
     "semi": false,
     "printWidth": 100
   },
   "dependencies": {
+    "@prisma/client": "2.17.0",
     "@typescript/twoslash": "^1.1.2",
     "cookiecord": "^0.2.12",
     "dotenv-safe": "^8.2.0",
@@ -15,6 +26,7 @@
     "parse-duration": "^0.4.4",
     "pg": "^8.3.0",
     "pretty-ms": "^7.0.0",
+    "prisma": "2.17.0",
     "typeorm": "^0.2.25"
   },
   "devDependencies": {
@@ -33,11 +45,5 @@
     "hooks": {
       "pre-commit": "pretty-quick --staged"
     }
-  },
-  "scripts": {
-    "start": "ts-node-dev --respawn src",
-    "build": "tsc",
-    "lint": "prettier --check \"src/**/*.ts\"",
-    "lint:fix": "prettier \"src/**/*.ts\" --write "
   }
 }

@@ -1,0 +1,39 @@
+services:
+  - type: web
+    name: blitz-discord-bot
+    env: node
+    plan: starter
+    buildCommand: yarn --frozen-lockfile --prod=false && yarn prisma migrate deploy --preview-feature && yarn build
+    startCommand: yarn prod:start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATABASE_URL
+        fromDatabase:
+          name: blitz-discord-bot-db
+          property: connectionString
+      - key: BOT_ADMINS
+        value: 5040
+      - key: ASK_HELP_CHANNEL
+        value: 814595194825343056
+      - key: ASK_CATEGORY
+        value: 814594487036543017
+      - key: ONGOING_CATEGORY
+        value: 814594686257201192
+      - key: DORMANT_CATEGORY
+        value: 814594979439706153
+      - key: HAS_HELP_CHANNEL_ROLE_ID
+        value: 814598084356603944
+      # Following variables are in milliseconds
+      - key: DORMANT_CHANNEL_TIMEOUT
+        value: 86400000 # 24 hours
+      - key: DORMANT_CHANNEL_LOOP
+        value: 1800000 # 30 minutes
+      - key: ONGOING_EMPTY_TIMEOUT
+        value: 600000 # 10 minutes
+      - key: CHANNEL_NAMES
+        value: help-amber,help-amethyst,help-beryl,help-charoite,help-citrine,help-cuprite,help-diamond,help-emerald,help-garnet,help-gypsum,help-hessonite,help-iolite,help-jasper,help-moonstone,help-onyx,help-quartz,help-sapphire,help-topaz,help-turquoise,help-papagoite,help-mellite,help-humite,help-heliodor,help-fieldspar,help-euclase,help-diopside,help-diaspore,help-boleite
+
+databases:
+  - name: blitz-discord-bot-db
+    plan: starter
