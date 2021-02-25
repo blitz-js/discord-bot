@@ -1,7 +1,7 @@
 {
-	"name": "tsc-bot",
+	"name": "blitz-discord-bot",
 	"version": "0.0.1",
-	"description": "Typescript Community Bot",
+	"description": "Blitz Community Bot",
 	"main": "dist/index.js",
 	"dependencies": {
 		"@typescript/twoslash": "^1.1.2",
