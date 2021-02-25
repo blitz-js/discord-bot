@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
     // "incremental": true,                   /* Enable incremental compilation */
     "target": "es2018",
     "module": "commonjs",

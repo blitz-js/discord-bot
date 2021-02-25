@@ -11,7 +11,7 @@
   },
   "main": "dist/index.js",
   "prisma": {
-    "schema": "db/schema.prisma"
+    "schema": "src/db/schema.prisma"
   },
   "prettier": {
     "semi": false,

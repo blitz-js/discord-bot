@@ -7,7 +7,7 @@ import {
   optional,
 } from "cookiecord"
 import { Message, MessageEmbed, Guild, TextChannel, GuildMember } from "discord.js"
-import db from "db"
+import db from "../db"
 import {
   categories,
   BLITZ_PURPLE,
