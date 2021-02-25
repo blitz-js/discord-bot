@@ -263,7 +263,7 @@ export class HelpChanModule extends Module {
         // Do nothing, member left the guild
       }
     }
-    await db.user.delete({ where: { channelId: channel.id } })
+    await db.user.deleteMany({ where: { channelId: channel.id } })
 
     await this.moveChannel(channel, categories.dormant)
 

@@ -33,7 +33,7 @@ export class HelpModule extends Module {
         )
         .addField(
           `**Help Channel Commands:**`,
-          `\`done\` ► Close a __ongoing__ help channel opened by you!`
+          `\`close\` ► Close a __ongoing__ help channel opened by you!`
         )
         .setFooter(this.client.user?.username, this.client.user?.displayAvatarURL())
         .setTimestamp()
