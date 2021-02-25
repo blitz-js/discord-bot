@@ -5,6 +5,7 @@ import { Intents } from "discord.js"
 import { EtcModule } from "./modules/etc"
 import { HelpChanModule } from "./modules/helpchan"
 import { HelpModule } from "./modules/help"
+import http from "http"
 
 const client = new CookiecordClient(
   {
@@ -22,4 +23,14 @@ for (const mod of [EtcModule, HelpChanModule, HelpModule]) {
 }
 
 client.login(token)
-client.on("ready", () => console.log(`Logged in as ${client.user?.tag}`))
+client.on("ready", () => {
+  console.log(`Logged in as ${client.user?.tag}`)
+
+  const requestListener = function (_req: any, res: any) {
+    res.writeHead(200)
+    res.end("Ok")
+  }
+
+  const server = http.createServer(requestListener)
+  server.listen(80)
+})
