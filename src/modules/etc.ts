@@ -17,14 +17,6 @@ export class EtcModule extends Module {
     await msg.channel.send("https://dontasktoask.com/")
   }
 
-  @command({
-    description:
-      "Sends a link to <https://github.com/facebook/create-react-app/pull/8177#issue-353062710>",
-  })
-  async reactfc(msg: Message) {
-    await msg.channel.send("https://github.com/facebook/create-react-app/pull/8177#issue-353062710")
-  }
-
   @listener({ event: "message" })
   async onMessage(msg: Message) {
     if (msg.author.bot || !msg.content.toLowerCase().startsWith("poll:")) return

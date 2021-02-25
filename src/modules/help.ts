@@ -29,15 +29,11 @@ export class HelpModule extends Module {
         )
         .addField(
           `**Misc Commands:**`,
-          `\`help\` ► View a list of all commands!\n\`ping\` ► View the latency of the bot\n\`ask\` ► Sends a message with a link for [dontasktoask.com](https://dontasktoask.com)\n\`reactfc\` ► Sends a message with a link to a [pull request removing React.FC](https://github.com/facebook/create-react-app/pull/8177#issue-353062710)\n\`playground\` ► Just enter your code and get a link with TS playground!`
+          `\`help\` ► View a list of all commands!\n\`ping\` ► View the latency of the bot\n\`ask\` ► Sends a message with a link for [dontasktoask.com](https://dontasktoask.com)\n`
         )
         .addField(
           `**Help Channel Commands:**`,
           `\`done\` ► Close a __ongoing__ help channel opened by you!`
-        )
-        .addField(
-          `**Reputation Commands**`,
-          `\`rep\` ► Did somebody help you? Give them a reputation point!\n\`history\` ► Check the reputation history of a user!\n\`leaderboard\` ► See the reputation leaderboard!`
         )
         .setFooter(this.client.user?.username, this.client.user?.displayAvatarURL())
         .setTimestamp()

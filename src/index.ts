@@ -1,14 +1,9 @@
 import { token, botAdmins } from "./env"
 import CookiecordClient from "cookiecord"
 import { Intents } from "discord.js"
-import { getDB } from "./db"
 
-import { AutoroleModule } from "./modules/autorole"
 import { EtcModule } from "./modules/etc"
 import { HelpChanModule } from "./modules/helpchan"
-import { PlaygroundModule } from "./modules/playground"
-import { RepModule } from "./modules/rep"
-import { TwoslashModule } from "./modules/twoslash"
 import { HelpModule } from "./modules/help"
 
 const client = new CookiecordClient(
@@ -22,19 +17,9 @@ const client = new CookiecordClient(
   }
 )
 
-for (const mod of [
-  AutoroleModule,
-  EtcModule,
-  HelpChanModule,
-  PlaygroundModule,
-  RepModule,
-  TwoslashModule,
-  HelpModule,
-]) {
+for (const mod of [EtcModule, HelpChanModule, HelpModule]) {
   client.registerModule(mod)
 }
-
-getDB() // prepare the db for later
 
 client.login(token)
 client.on("ready", () => console.log(`Logged in as ${client.user?.tag}`))
