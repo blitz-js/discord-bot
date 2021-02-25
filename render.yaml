@@ -1,5 +1,5 @@
 services:
-  - type: pserve
+  - type: pserv
     name: blitz-discord-bot
     env: node
     plan: starter
