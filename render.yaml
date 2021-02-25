@@ -32,7 +32,7 @@ services:
       - key: ONGOING_EMPTY_TIMEOUT
         value: 600000 # 10 minutes
       - key: CHANNEL_NAMES
-        value: help-amber,help-amethyst,help-beryl,help-charoite,help-citrine,help-cuprite,help-diamond,help-emerald,help-garnet,help-gypsum,help-hessonite,help-iolite,help-jasper,help-moonstone,help-onyx,help-quartz,help-sapphire,help-topaz,help-turquoise,help-papagoite,help-mellite,help-humite,help-heliodor,help-fieldspar,help-euclase,help-diopside,help-diaspore,help-boleite
+        value: help-aquarius,help-aries,help-apus,help-aquila,help-columbia,help-cygnus,help-dorado,help-draco,help-eridanus,help-equuleus,help-gemini,help-grus,help-leo,help-lepus,help-libra,help-monoceros,help-musca,help-norma,help-octans,help-orion,help-pavo,help-pictor,help-puppis,help-sagitta,help-scorpius,help-tarus,help-tucana,help-virgo,help-volans,help-vulpecula
 
 databases:
   - name: blitz-discord-bot-db
