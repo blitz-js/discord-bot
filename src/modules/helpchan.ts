@@ -205,6 +205,7 @@ export class HelpChanModule extends Module {
   }
 
   async ensureAskChannels(guild: Guild) {
+    console.log("Running ensureAskChannels")
     while (
       guild.channels.cache
         .filter((channel) => channel.parentID == categories.ask)
@@ -232,6 +233,7 @@ export class HelpChanModule extends Module {
           await dormant.send(this.AVAILABLE_EMBED)
         }
       } else {
+        console.log("Creating", this.getChannelName(guild))
         const chan = await guild.channels.create(this.getChannelName(guild), {
           type: "text",
           topic: "Ask your questions here!",
