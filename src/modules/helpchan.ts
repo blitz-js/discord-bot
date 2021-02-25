@@ -31,9 +31,9 @@ This channel will be dedicated to answering your question only.
 `
 
 const DORMANT_MESSAGE = `
-This help channel has been marked as **dormant**, and has been moved into the **Help: Dormant** category at the bottom of the channel list. It is no longer possible to send messages in this channel until it becomes available again.
+This help channel has been marked as **dormant**, and has been moved into the **Dormant** category at the bottom of the channel list. It is no longer possible to send messages in this channel until it becomes available again.
 
-If your question wasn't answered yet, you can claim a new help channel from the **Help: Available** category by simply asking your question again. Consider rephrasing the question to maximize your chance of getting a good answer. If you're not sure how, have a look through [StackOverflow's guide on asking a good question](https://stackoverflow.com/help/how-to-ask)
+If your question wasn't answered yet, you can claim a new help channel from the **Available Help Channels** category by simply asking your question again. Consider rephrasing the question to maximize your chance of getting a good answer. If you're not sure how, have a look through [StackOverflow's guide on asking a good question](https://stackoverflow.com/help/how-to-ask)
 `
 
 export class HelpChanModule extends Module {
