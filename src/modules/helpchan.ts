@@ -97,6 +97,7 @@ export class HelpChanModule extends Module {
   // is the most recent message. This will be caused if somebody deletes their message after they
   // claim a channel.
   async checkEmptyOngoing(channel: TextChannel) {
+    console.log("Running checkEmptyOngoing...")
     const messages = await channel.messages.fetch()
 
     const embed = messages.first()?.embeds[0]
@@ -181,6 +182,7 @@ export class HelpChanModule extends Module {
     description: "Marks this channel as resolved",
   })
   async resolved(msg: Message) {
+    console.log("Running resolved...")
     if (
       !(msg.channel instanceof TextChannel) ||
       !msg.guild ||
@@ -205,7 +207,7 @@ export class HelpChanModule extends Module {
   }
 
   async ensureAskChannels(guild: Guild) {
-    console.log("Running ensureAskChannels")
+    console.log("Running ensureAskChannels...")
     while (
       guild.channels.cache
         .filter((channel) => channel.parentID == categories.ask)
@@ -297,6 +299,7 @@ export class HelpChanModule extends Module {
 
   @command({ inhibitors: [CommonInhibitors.guildsOnly] })
   async removeHelpChannelRole(msg: Message, @optional member?: GuildMember) {
+    console.log("Running removeHelpChannelRole...")
     const guildTarget = await msg.guild!.members.fetch(member ?? msg.author)
 
     if (!guildTarget) return
@@ -319,6 +322,7 @@ export class HelpChanModule extends Module {
   }
 
   async claim(msg: Message, member: GuildMember) {
+    console.log("Running claim...")
     const helpUser = await db.user.findFirst({ where: { discordId: member.id } })
     if (helpUser) {
       await msg.channel.send(

@@ -27,9 +27,12 @@ export class EtcModule extends Module {
 
   @listener({ event: "messageReactionAdd" })
   async onReact(reaction: MessageReaction, member: GuildMember) {
-    if (reaction.message.author.id !== this.client.user?.id) return
+    if (!this.client.user) return
+    if (!reaction.message.author) return
+    if (!member) return
+    if (reaction.message.author.id !== this.client.user.id) return
     if (reaction.emoji.name !== DELETE_EMOJI) return
-    if (member.id === this.client.user?.id) return
+    if (member.id === this.client.user.id) return
 
     if (ownsBotMessage(reaction.message, member.id)) {
       clearMessageOwnership(reaction.message)
