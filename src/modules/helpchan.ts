@@ -28,6 +28,8 @@ This channel will be dedicated to answering your question only.
 • Explain what you expect to happen and what actually happens.
 • Include a code sample and error message, if you got any.
 • For more tips, check out this guide on [asking good questions](https://stackoverflow.com/help/how-to-ask).
+
+Fork [this Blitz Codesandbox](http://sandbox.blitzjs.com) to make a minimal reproduction.
 `
 
 const DORMANT_MESSAGE = `
