@@ -189,8 +189,14 @@ export class HelpChanModule extends Module {
       !(msg.channel instanceof TextChannel) ||
       !msg.guild ||
       this.busyChannels.has(msg.channel.id)
-    )
+    ) {
+      console.log("Aborting...", {
+        channel: msg.channel,
+        guild: msg.guild,
+        hasBusyChannel: this.busyChannels.has(msg.channel.id),
+      })
       return
+    }
 
     if (msg.channel.parentID !== categories.ongoing) {
       return await msg.channel.send(":warning: you can only run this in ongoing help channels.")
@@ -227,7 +233,7 @@ export class HelpChanModule extends Module {
         if (!lastMessage)
           lastMessage = (await dormant.messages.fetch({ limit: 5 }))
             .array()
-            .find((m) => m.author.id === this.client.user?.id)
+            .find((m) => m.author && m.author.id === this.client.user?.id)
 
         if (lastMessage) {
           // If there is a last message (the dormant message) by the bot, just edit it
