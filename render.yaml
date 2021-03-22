@@ -26,7 +26,7 @@ services:
         value: 814598084356603944
       # Following variables are in milliseconds
       - key: DORMANT_CHANNEL_TIMEOUT
-        value: 86400000 # 24 hours
+        value: 129600000 # 36 hours
       - key: DORMANT_CHANNEL_LOOP
         value: 1800000 # 30 minutes
       - key: ONGOING_EMPTY_TIMEOUT
