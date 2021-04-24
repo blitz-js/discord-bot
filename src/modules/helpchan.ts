@@ -202,16 +202,16 @@ export class HelpChanModule extends Module {
       return await msg.channel.send(":warning: you can only run this in ongoing help channels.")
     }
 
-    const owner = await db.user.findFirst({ where: { channelId: msg.channel.id } })
+    // const owner = await db.user.findFirst({ where: { channelId: msg.channel.id } })
 
-    if (
-      (owner && owner.discordId === msg.author.id) ||
-      msg.member?.hasPermission("MANAGE_MESSAGES")
-    ) {
-      await this.markChannelAsDormant(msg.channel)
-    } else {
-      return await msg.channel.send(":warning: you have to be the asker to close the channel.")
-    }
+    // if (
+    //   (owner && owner.discordId === msg.author.id) ||
+    //   msg.member?.hasPermission("MANAGE_MESSAGES")
+    // ) {
+    await this.markChannelAsDormant(msg.channel)
+    // } else {
+    //   return await msg.channel.send(":warning: you have to be the asker to close the channel.")
+    // }
   }
 
   async ensureAskChannels(guild: Guild) {
