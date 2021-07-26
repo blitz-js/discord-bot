@@ -35,7 +35,7 @@ Fork [this Blitz Codesandbox](http://sandbox.blitzjs.com) to make a minimal repr
 const DORMANT_MESSAGE = `
 This help channel has been marked as **dormant**, and has been moved into the **Dormant** category at the bottom of the channel list. It is no longer possible to send messages in this channel until it becomes available again.
 
-If your question wasn't answered yet, you can claim a new help channel from the **Available Help Channels** category by simply asking your question again. Consider rephrasing the question to maximize your chance of getting a good answer. If you're not sure how, have a look through [StackOverflow's guide on asking a good question](https://stackoverflow.com/help/how-to-ask)
+Sorry if your question wasn't answered yet! Sometimes no one is available, especially on weekends. You can claim a new help channel from the **Available Help Channels** category by simply asking your question again. 
 `
 
 export class HelpChanModule extends Module {
